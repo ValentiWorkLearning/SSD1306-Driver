@@ -1,10 +1,11 @@
 /*
  * SSD1306.h
  *
- *  Created on: 14 дек. 2017 г.
+ *  Created on: 14 dec. 2017 г.
  *      Author: Valenti
  *      The header file for display with SSD1306 controller
  *
+ *LASR REVIEW : 21.12.2017 3:47
  */
 
 #ifndef INC_SSD1306_H_
@@ -18,8 +19,8 @@
 #include "stm32f1xx_hal_i2c.h"
 #include <string.h>
 
-#define SSD1306_WIDTH            					128
-#define SSD1306_HEIGHT 								64
+#define SSD1306_WIDTH	128
+#define SSD1306_HEIGHT	64
 
 /**
     * System definitions and variables
@@ -76,11 +77,11 @@ typedef enum
 /**
     *Display driver commands definitions
     */
-#define SSD1306_I2C_ADDR 							0x78
+#define SSD1306_I2C_ADDR							0x78
 
-#define SSD1306_I2C_CMD_MODE 						0x80
+#define SSD1306_I2C_CMD_MODE						0x80
 #define SSD1306_I2C_DATA_MODE 						0xC0
-#define SSD1306_I2C_MULTIBYTE_DATA_MODE 			0x40
+#define SSD1306_I2C_MULTIBYTE_DATA_MODE				0x40
 
 #define SSD1306_SET_LOWER_COLUMN_START_ADRESS 		0x00
 #define SSD1306_SET_HIGHER_COLUMN_START_ADRESS		0x10
