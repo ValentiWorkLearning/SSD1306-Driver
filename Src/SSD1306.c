@@ -140,56 +140,58 @@ void ssd1306_deActivateScroll( void )
 	ssd1306_writeCommand( SSD1306_DEACTIVATE_SCROLL );
 }
 
-char SSD1306_Putc(char ch, const FontInfo_t* Font, uint8_t color)
+//TO DO - Imlplement structure to return runtime errors
+//TO DO - Implement the correct processing fonts with symbol width >10( two bytes for each pixel row)
+
+char SSD1306_Putc(char _char, const FontInfo_t* _fontInfo, SSD1306_Colors _color)
 {
-	uint16_t l_charIndex = ch-33;
+	uint16_t l_charIndex = _char-33;
 	uint16_t l_rowByte = 0;
 
-	if(ch == ' ')
+	if(_char == ' ')
 	{
-		for(int i = 0; i< Font->m_spaceWidth; i++)
+		for(int i = 0; i < _fontInfo -> m_spaceWidth; i++)
 		{
 			ssd1306_setPixel(SSD1306.CurrentX + i, SSD1306.CurrentY, (uint8_t) !color);
 		}
 		return 0x20;
 	}
 
-	for(int i = 0; i<Font->m_charHeight;  i++)
+	for( int i = 0; i < _fontInfo->m_charHeight;  i++ )
 	{
-		l_rowByte = Font -> m_charBitmap[ Font->m_fontDescriptor[ l_charIndex ].m_charOffset + i ];
+		l_rowByte = _fontInfo -> m_charBitmap[ _fontInfo->m_fontDescriptor[ l_charIndex ].m_charOffset + i ];
 
-		for(int j = 0; j<Font->m_fontDescriptor[l_charIndex].m_charWidth; j++)
+		for( int j = 0; j < _fontInfo->m_fontDescriptor[ l_charIndex ].m_charWidth; j++ )
 		{
 
-			if(( l_rowByte << j) & 0x80 )
+			if( ( l_rowByte << j ) & 0x80 )
 			{
-				ssd1306_setPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i), (uint8_t) color);
+				ssd1306_setPixel( SSD1306.CurrentX + j, ( SSD1306.CurrentY + i ), (uint8_t) color );
 
 			}
 			else
 			{
-				ssd1306_setPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i), (uint8_t) !color);
+				ssd1306_setPixel( SSD1306.CurrentX + j, ( SSD1306.CurrentY + i ), (uint8_t) !color );
 			}
 
 		}
 	}
 
-	SSD1306.CurrentX += Font->m_fontDescriptor[l_charIndex].m_charWidth + 2 * Font->m_spaceWidth;
-	return ch;
+	SSD1306.CurrentX += _fontInfo->m_fontDescriptor[l_charIndex].m_charWidth + 2 * _fontInfo->m_spaceWidth;
+	return _char;
 }
 
-char SSD1306_Puts(char* str, const FontInfo_t* Font, uint8_t color)
+
+//TO DO - Imlplement structure to return runtime errors
+char SSD1306_Puts(char* _string, const FontInfo_t* _fontInfo, SSD1306_Colors color)
 {
-	while (*str)
+	while ( * _string )
 	{
-			/* Write character by character */
-		if (SSD1306_Putc(*str, Font, color) != *str)
+		if (SSD1306_Putc( * _string , _fontInfo , color ) != *_string )
 		{
-			/* Return error */
-			return *str;
+			return * _string;
 		}
-			/* Increase string pointer */
-		str++;
+		_string ++;
 	}
-	return *str;
+	return * _string;
 }

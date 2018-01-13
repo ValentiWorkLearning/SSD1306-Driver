@@ -222,7 +222,7 @@ void ssd1306_displayOn( void );
 
 void ssd1306_displayOff( void );
 
-char SSD1306_Putc(char ch, const FontInfo_t * Font, uint8_t color);
+char SSD1306_Putc(char __char, const FontInfo_t * Font, SSD1306_Colors _color);
 
-char SSD1306_Puts(char* str, const FontInfo_t * Font, uint8_t color);
+char SSD1306_Puts(char* str, const FontInfo_t * Font, SSD1306_Colors _color);
 #endif /* INC_SSD1306_H_ */
