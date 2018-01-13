@@ -18,7 +18,8 @@
 #include "stm32f1xx_hal.h"
 #include "stm32f1xx_hal_i2c.h"
 #include <string.h>
-#include "Fonts.h"
+//#include "Fonts.h"
+#include "FontInfo.h"
 
 #define SSD1306_WIDTH	128
 #define SSD1306_HEIGHT	64
@@ -221,7 +222,7 @@ void ssd1306_displayOn( void );
 
 void ssd1306_displayOff( void );
 
-char SSD1306_Putc(char ch, FontDef_t* Font, uint8_t color);
+char SSD1306_Putc(char ch, const FontInfo_t * Font, uint8_t color);
 
-char SSD1306_Puts(char* str, FontDef_t* Font, uint8_t color);
+char SSD1306_Puts(char* str, const FontInfo_t * Font, uint8_t color);
 #endif /* INC_SSD1306_H_ */

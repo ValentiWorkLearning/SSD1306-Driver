@@ -43,11 +43,9 @@
 /* USER CODE BEGIN Includes */
 #include  "SSD1306.h"
 #include "pictures.h"
-#include "Fonts.h"
+//#include "Fonts.h"
 
-#include "stdlib.h"//for UART test
-#define PI 3.14159265
-#include "math.h"
+#include "CorperBlack.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -118,9 +116,11 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-SSD1306_Puts("Hello world", &Font_7x10, SSD1306_WHITE );
-SSD1306_Puts("Hello ", &Font_7x10, SSD1306_WHITE );
 //SSD1306_Puts("Hello world", &Font_7x10, SSD1306_WHITE );
+//SSD1306_Puts("Hello ", &Font_7x10, SSD1306_WHITE );
+//SSD1306_Puts("Hello world", &Font_7x10, SSD1306_WHITE );
+
+ SSD1306_Puts("Halenti", &cooperBlack_8ptFontInfo, SSD1306_WHITE );
 	  ssd1306_updateScreen();
 //	  ssd1306_makeContinuousScroll(continuousVertical,frames_2,2,0,7);
 

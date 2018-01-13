@@ -278,18 +278,18 @@ const uint8_t Font7x10[] = {
 };
 
 
-FontDef_t Font_7x10 = {
-	7,
-	10,
-	10,
-	Font7x10
-};
-
-char* FONTS_GetStringSize(char* str, FONTS_SIZE_t* SizeStruct, FontDef_t* Font) {
-	/* Fill settings */
-	SizeStruct->Height = Font->FontHeight;
-	SizeStruct->Length = Font->FontWidth * strlen(str);
-
-	/* Return pointer */
-	return str;
-}
+//FontDef_t Font_7x10 = {
+//	7,
+//	10,
+//	10,
+//	Font7x10
+//};
+//
+//char* FONTS_GetStringSize(char* str, FONTS_SIZE_t* SizeStruct, FontDef_t* Font) {
+//	/* Fill settings */
+//	SizeStruct->Height = Font->FontHeight;
+//	SizeStruct->Length = Font->FontWidth * strlen(str);
+//
+//	/* Return pointer */
+//	return str;
+//}

@@ -140,44 +140,56 @@ void ssd1306_deActivateScroll( void )
 	ssd1306_writeCommand( SSD1306_DEACTIVATE_SCROLL );
 }
 
+char SSD1306_Putc(char ch, const FontInfo_t* Font, uint8_t color)
+{
+	uint16_t l_charIndex = ch-33;
+	uint16_t l_rowByte = 0;
 
-char SSD1306_Putc(char ch, FontDef_t* Font, uint8_t color) {
-	uint32_t i, b, j;
+	if(ch == ' ')
+	{
+		for(int i = 0; i< Font->m_spaceWidth; i++)
+		{
+			ssd1306_setPixel(SSD1306.CurrentX + i, SSD1306.CurrentY, (uint8_t) !color);
+		}
+		return 0x20;
+	}
 
-	b = 0;
-	/* Go through font */
-	for (i = 0; i < Font->FontHeight; i++) {
-		for (j = 0; j < Font->FontWidth; j++) {
-			if ((Font->data[ch*Font->CharBytes + b/8] >> b%8) & 1) {
+	for(int i = 0; i<Font->m_charHeight;  i++)
+	{
+		l_rowByte = Font -> m_charBitmap[ Font->m_fontDescriptor[ l_charIndex ].m_charOffset + i ];
+
+		for(int j = 0; j<Font->m_fontDescriptor[l_charIndex].m_charWidth; j++)
+		{
+
+			if(( l_rowByte << j) & 0x80 )
+			{
 				ssd1306_setPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i), (uint8_t) color);
-			} else {
-				ssd1306_setPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i), (uint8_t)!color);
+
 			}
-			b++;
+			else
+			{
+				ssd1306_setPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i), (uint8_t) !color);
+			}
+
 		}
 	}
 
-	/* Increase pointer */
-	SSD1306.CurrentX += Font->FontWidth;
-
-	/* Return character written */
+	SSD1306.CurrentX += Font->m_fontDescriptor[l_charIndex].m_charWidth + 2 * Font->m_spaceWidth;
 	return ch;
 }
 
-char SSD1306_Puts(char* str, FontDef_t* Font, uint8_t color) {
-	/* Write characters */
-	while (*str) {
-		/* Write character by character */
-		if (SSD1306_Putc(*str, Font, color) != *str) {
+char SSD1306_Puts(char* str, const FontInfo_t* Font, uint8_t color)
+{
+	while (*str)
+	{
+			/* Write character by character */
+		if (SSD1306_Putc(*str, Font, color) != *str)
+		{
 			/* Return error */
 			return *str;
 		}
-
-		/* Increase string pointer */
+			/* Increase string pointer */
 		str++;
 	}
-
-	/* Everything OK, zero should be returned */
 	return *str;
 }
-
