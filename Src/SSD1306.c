@@ -7,9 +7,17 @@
 
 #include "SSD1306.h"
 
+typedef struct {
+	uint16_t CurrentX;
+	uint16_t CurrentY;
+	uint8_t Inverted;
+	uint8_t Initialized;
+} SSD1306_t;
 
+static SSD1306_t SSD1306;
 
-void ssd1306_writeByte(  uint8_t _writeMode, uint8_t _data )
+void ssd1306_writeByte(  uint8_t _writeMode
+					   , uint8_t _data )
 {
 	uint8_t l_sendArray[2] = { _writeMode ,_data };
 
@@ -34,7 +42,8 @@ void ssd1306_fill( SSD1306_Colors  _fillColor )
 	memset(SSD1306_pDispBuffer, ( _fillColor == SSD1306_BLACK ) ? 0x00 : 0xFF, SSD1306_DISP_SIZE );
 }
 
-void ssd1306_sendPicture( uint8_t * _picture ,int _pictureSize )
+void ssd1306_sendPicture( uint8_t * _picture
+						, int _pictureSize )
 {
 	memcpy( SSD1306_pDispBuffer + 1, _picture, _pictureSize );
 }
@@ -69,18 +78,106 @@ void ssd1306_initDisplay( void )
 	ssd1306_writeCommand( SSD1306_SET_PAGE_START_ADRESS				);
 	ssd1306_writeCommand( SSD1306_DEACTIVATE_SCROLL					);
 	ssd1306_writeCommand( SSD1306_SET_DISPLAY_ON					);
-
 	ssd1306_fill(SSD1306_BLACK);
 	ssd1306_updateScreen();
 }
 
-void ssd1306_makeRotation(SSD1306_rotationType _rotationType ,  SSD1306_rotationSpeed _rotationSpeed )
+void ssd1306_makeContinuousScroll( SSD1306_rotationType _rotationType
+								   ,	SSD1306_rotationSpeed _rotationSpeed
+								   , 	uint8_t _rotationOffset
+								   , 	uint8_t _startPage
+								   , 	uint8_t _endPage
+								  )
 {
 	ssd1306_writeCommand( _rotationType );
 	ssd1306_writeCommand( 0x00 );
-	ssd1306_writeCommand( 0x00 );//Need fix - it`s start adress on page
+	ssd1306_writeCommand( _startPage );
 	ssd1306_writeCommand( _rotationSpeed );
-	ssd1306_writeCommand( 0x07 );
-	ssd1306_writeCommand( 0x01 );
-	ssd1306_writeCommand( 0x2F );
+	ssd1306_writeCommand( _endPage );
+	ssd1306_writeCommand( _rotationOffset );
+	ssd1306_activateScroll();
 }
+
+void ssd1306_makeShortScroll(	SSD1306_rotationType _rotationType
+								,	SSD1306_rotationSpeed _rotationSpeed
+								,	uint8_t _startPage
+								,	uint8_t _endPage )
+{
+	ssd1306_writeCommand( _rotationType );
+	ssd1306_writeCommand( 0x00 );
+	ssd1306_writeCommand( _startPage );
+	ssd1306_writeCommand( _rotationSpeed );
+	ssd1306_writeCommand( _endPage );
+	ssd1306_activateScroll();
+
+}
+
+void ssd1306_setPixel(  uint8_t _xCoord
+					 ,  uint8_t _yCoord
+					 ,  SSD1306_Colors _color
+					 )
+{
+
+	if (_color == SSD1306_BLACK )
+	{
+		SSD1306_pDispBuffer[ _xCoord+(_yCoord / 8) * SSD1306_WIDTH ] &=~( 1 <<( _yCoord % 8 ) );
+	}
+	else
+	{
+		SSD1306_pDispBuffer[ _xCoord+(_yCoord / 8) * SSD1306_WIDTH ] |= ( 1<< ( _yCoord % 8 ) );
+	}
+}
+
+void ssd1306_activateScroll( void )
+{
+	ssd1306_writeCommand( SSD1306_ACTIVATE_SCROLL );
+}
+
+void ssd1306_deActivateScroll( void )
+
+
+{
+	ssd1306_writeCommand( SSD1306_DEACTIVATE_SCROLL );
+}
+
+
+char SSD1306_Putc(char ch, FontDef_t* Font, uint8_t color) {
+	uint32_t i, b, j;
+
+	b = 0;
+	/* Go through font */
+	for (i = 0; i < Font->FontHeight; i++) {
+		for (j = 0; j < Font->FontWidth; j++) {
+			if ((Font->data[ch*Font->CharBytes + b/8] >> b%8) & 1) {
+				ssd1306_setPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i), (uint8_t) color);
+			} else {
+				ssd1306_setPixel(SSD1306.CurrentX + j, (SSD1306.CurrentY + i), (uint8_t)!color);
+			}
+			b++;
+		}
+	}
+
+	/* Increase pointer */
+	SSD1306.CurrentX += Font->FontWidth;
+
+	/* Return character written */
+	return ch;
+}
+
+char SSD1306_Puts(char* str, FontDef_t* Font, uint8_t color) {
+	/* Write characters */
+	while (*str) {
+		/* Write character by character */
+		if (SSD1306_Putc(*str, Font, color) != *str) {
+			/* Return error */
+			return *str;
+		}
+
+		/* Increase string pointer */
+		str++;
+	}
+
+	/* Everything OK, zero should be returned */
+	return *str;
+}
+

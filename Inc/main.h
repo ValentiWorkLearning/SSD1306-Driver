@@ -9,7 +9,7 @@
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
-  * COPYRIGHT(c) 2017 STMicroelectronics
+  * COPYRIGHT(c) 2018 STMicroelectronics
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -47,8 +47,8 @@
 
 /* Private define ------------------------------------------------------------*/
 
-#define VIBRO_PORT_Pin GPIO_PIN_8
-#define VIBRO_PORT_GPIO_Port GPIOB
+#define VIBRO_Pin GPIO_PIN_8
+#define VIBRO_GPIO_Port GPIOB
 
 /* ########################## Assert Selection ############################## */
 /**
