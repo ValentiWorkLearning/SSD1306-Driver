@@ -152,7 +152,7 @@ char SSD1306_Putc(char _char, const FontInfo_t* _fontInfo, SSD1306_Colors _color
 	{
 		for(int i = 0; i < _fontInfo -> m_spaceWidth; i++)
 		{
-			ssd1306_setPixel(SSD1306.CurrentX + i, SSD1306.CurrentY, (uint8_t) !color);
+			ssd1306_setPixel(SSD1306.CurrentX + i, SSD1306.CurrentY, !_color);
 		}
 		return 0x20;
 	}
@@ -166,12 +166,12 @@ char SSD1306_Putc(char _char, const FontInfo_t* _fontInfo, SSD1306_Colors _color
 
 			if( ( l_rowByte << j ) & 0x80 )
 			{
-				ssd1306_setPixel( SSD1306.CurrentX + j, ( SSD1306.CurrentY + i ), (uint8_t) color );
+				ssd1306_setPixel( SSD1306.CurrentX + j, ( SSD1306.CurrentY + i ), _color );
 
 			}
 			else
 			{
-				ssd1306_setPixel( SSD1306.CurrentX + j, ( SSD1306.CurrentY + i ), (uint8_t) !color );
+				ssd1306_setPixel( SSD1306.CurrentX + j, ( SSD1306.CurrentY + i ), !_color );
 			}
 
 		}

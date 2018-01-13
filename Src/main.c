@@ -120,7 +120,7 @@ int main(void)
 //SSD1306_Puts("Hello ", &Font_7x10, SSD1306_WHITE );
 //SSD1306_Puts("Hello world", &Font_7x10, SSD1306_WHITE );
 
- SSD1306_Puts("Halenti", &cooperBlack_8ptFontInfo, SSD1306_WHITE );
+ SSD1306_Puts("/dev/drugs/C++", &cooperBlack_8ptFontInfo, SSD1306_WHITE );
 	  ssd1306_updateScreen();
 //	  ssd1306_makeContinuousScroll(continuousVertical,frames_2,2,0,7);
 
