@@ -14,6 +14,7 @@ typedef struct
 {
 	uint16_t m_charWidth;
 	uint16_t m_charOffset;
+
 } FontCharInfo_t;
 
 typedef struct
