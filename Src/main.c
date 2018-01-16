@@ -43,7 +43,6 @@
 /* USER CODE BEGIN Includes */
 #include  "SSD1306.h"
 #include "pictures.h"
-//#include "Fonts.h"
 
 #include "CorperBlack.h" //TESTED-OK.
 #include "CoorperNew.h"	  //TESTED-OK.

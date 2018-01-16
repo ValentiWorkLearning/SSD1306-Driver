@@ -153,8 +153,8 @@ typedef enum
     *_writeMode - can be CMD_MODE, DATA_MODE , MULTIBYTE_DATA_MODE
     *_data - data which will be write
     */
-void ssd1306_writeByte( uint8_t _writeMode 	,
-						uint8_t _data 		);
+void ssd1306_writeByte( uint8_t _writeMode ,
+						uint8_t _data );
 
 /**
     *Write command to SSD1306 via I2C
@@ -199,20 +199,20 @@ void ssd1306_sendPicture( uint8_t * _picture,
     *_startPage - start page adress in display
     *_endPage - end page adress in display
     */
-void ssd1306_makeContinuousScroll( SSD1306_rotationType _rotationType	,
+void ssd1306_makeContinuousScroll( SSD1306_rotationType _rotationType,
 								   SSD1306_rotationSpeed _rotationSpeed	,
-								   uint8_t _rotationOffset				,
-								   uint8_t _startPage					,
-								   uint8_t _endPage 					);
+								   uint8_t _rotationOffset,
+								   uint8_t _startPage,
+								   uint8_t _endPage );
 
-void ssd1306_makeShortScroll( SSD1306_rotationType _rotationType	,
-							  SSD1306_rotationSpeed _rotationSpeed	,
-							  uint8_t _startPage					,
-							  uint8_t _endPage 						);
+void ssd1306_makeShortScroll( SSD1306_rotationType _rotationType,
+							  SSD1306_rotationSpeed _rotationSpeed,
+							  uint8_t _startPage,
+							  uint8_t _endPage );
 
-void ssd1306_setPixel(	uint8_t _xCoord			,
-						uint8_t _yCoord		  	,
-						SSD1306_Colors _color 	);
+void ssd1306_setPixel(	uint8_t _xCoord ,
+						uint8_t _yCoord ,
+						SSD1306_Colors _color );
 
 void ssd1306_activateScroll( void );
 
@@ -222,29 +222,29 @@ void ssd1306_displayOn( void );
 
 void ssd1306_displayOff( void );
 
-char ssd1306_putChar( char _char			  	,
-				   	  const FontInfo_t * _font	,
-					  SSD1306_Colors _color		);
+char ssd1306_putChar( char _char,
+				   	  const FontInfo_t * _font,
+					  SSD1306_Colors _color);
 
-char ssd1306_putString( char* _string			,
-				   	    const FontInfo_t * _font	,
-						SSD1306_Colors _color	);
+char ssd1306_putString( char* _string,
+				   	    const FontInfo_t * _font,
+						SSD1306_Colors _color);
 
 void ssd1306_setCursor( uint8_t _xCoord	,
-						 uint8_t _yCoord	);
+						 uint8_t _yCoord);
 
 //Geometric primitives
-void ssd1306_drawLine( uint16_t x0				,
-					   uint16_t y0				,
-					   uint16_t x1				,
-					   uint16_t y1				,
-					   SSD1306_Colors _color	);
+void ssd1306_drawLine( uint16_t x0,
+					   uint16_t y0,
+					   uint16_t x1,
+					   uint16_t y1,
+					   SSD1306_Colors _color);
 
-void ssd1306_drawRectangle(uint16_t x,
-						   uint16_t y,
-						   uint16_t w,
-						   uint16_t h,
-						   SSD1306_Colors _color);
+void ssd1306_drawRectangle( uint16_t x,
+						   	uint16_t y,
+						    uint16_t w,
+						    uint16_t h,
+						    SSD1306_Colors _color);
 
 void ssd1306_drawCircle ( int16_t x0,
 						  int16_t y0,

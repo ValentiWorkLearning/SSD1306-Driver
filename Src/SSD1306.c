@@ -82,12 +82,11 @@ void ssd1306_initDisplay( void )
 	ssd1306_updateScreen();
 }
 
-void ssd1306_makeContinuousScroll( SSD1306_rotationType _rotationType
-								   ,	SSD1306_rotationSpeed _rotationSpeed
-								   , 	uint8_t _rotationOffset
-								   , 	uint8_t _startPage
-								   , 	uint8_t _endPage
-								  )
+void ssd1306_makeContinuousScroll( SSD1306_rotationType _rotationType,
+								   SSD1306_rotationSpeed _rotationSpeed,
+								   uint8_t _rotationOffset,
+								   uint8_t _startPage,
+								   uint8_t _endPage)
 {
 	ssd1306_writeCommand( _rotationType );
 	ssd1306_writeCommand( 0x00 );
@@ -98,10 +97,10 @@ void ssd1306_makeContinuousScroll( SSD1306_rotationType _rotationType
 	ssd1306_activateScroll();
 }
 
-void ssd1306_makeShortScroll(	SSD1306_rotationType _rotationType
-								,	SSD1306_rotationSpeed _rotationSpeed
-								,	uint8_t _startPage
-								,	uint8_t _endPage )
+void ssd1306_makeShortScroll(	SSD1306_rotationType _rotationType,
+								SSD1306_rotationSpeed _rotationSpeed,
+								uint8_t _startPage,
+								uint8_t _endPage )
 {
 	ssd1306_writeCommand( _rotationType );
 	ssd1306_writeCommand( 0x00 );
@@ -112,10 +111,9 @@ void ssd1306_makeShortScroll(	SSD1306_rotationType _rotationType
 
 }
 
-void ssd1306_setPixel(  uint8_t _xCoord
-					 ,  uint8_t _yCoord
-					 ,  SSD1306_Colors _color
-					 )
+void ssd1306_setPixel(  uint8_t _xCoord,
+						uint8_t _yCoord,
+						SSD1306_Colors _color)
 {
 
 	if (_color == SSD1306_BLACK )
@@ -143,7 +141,9 @@ void ssd1306_deActivateScroll( void )
 //TO DO - Imlplement structure to return runtime errors
 //TO DO - Implement the correct processing fonts with symbol width >10( two bytes for each pixel row)
 
-char ssd1306_putChar(char _char, const FontInfo_t* _fontInfo, SSD1306_Colors _color)
+char ssd1306_putChar( char _char,
+					  const FontInfo_t* _fontInfo,
+					  SSD1306_Colors _color	)
 {
 	uint16_t l_charIndex = _char-33;
 	uint16_t l_rowByte = 0;
@@ -183,7 +183,9 @@ char ssd1306_putChar(char _char, const FontInfo_t* _fontInfo, SSD1306_Colors _co
 
 
 //TO DO - Imlplement structure to return runtime errors
-char ssd1306_putString(char* _string, const FontInfo_t* _fontInfo, SSD1306_Colors color)
+char ssd1306_putString( char* _string,
+						const FontInfo_t* _fontInfo,
+						SSD1306_Colors color)
 {
 	while ( * _string )
 	{
@@ -197,7 +199,7 @@ char ssd1306_putString(char* _string, const FontInfo_t* _fontInfo, SSD1306_Color
 }
 
 void ssd1306_setCursor( uint8_t _xCoord	,
-						 uint8_t _yCoord	)
+						uint8_t _yCoord )
 {
 	if(_xCoord>128 || _yCoord>64) return;
 	SSD1306.CurrentX = _xCoord;
@@ -205,13 +207,12 @@ void ssd1306_setCursor( uint8_t _xCoord	,
 }
 
 //Geometric primitives
-void ssd1306_drawLine( uint16_t x0				,
-		   	   	   	   uint16_t y0				,
-					   uint16_t x1				,
-					   uint16_t y1				,
-					   SSD1306_Colors _color	)
+void ssd1306_drawLine( uint16_t x0 ,
+					   uint16_t y0,
+					   uint16_t x1,
+					   uint16_t y1 ,
+					   SSD1306_Colors _color )
 {
-
 	int16_t dx, dy, sx, sy, err, e2, i, tmp;
 
 		/* Check for overflow */
@@ -312,7 +313,12 @@ void ssd1306_drawLine( uint16_t x0				,
 
 }
 
-void ssd1306_drawRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, SSD1306_Colors _color) {
+void ssd1306_drawRectangle( uint16_t x,
+							uint16_t y,
+							uint16_t w,
+							uint16_t h,
+							SSD1306_Colors _color)
+{
 	/* Check input parameters */
 	if (
 		x >= SSD1306_WIDTH ||
@@ -339,7 +345,10 @@ void ssd1306_drawRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, SSD13
 	ssd1306_drawLine(x + w, y, x + w, y + h, _color); /* Right line */
 }
 
-void ssd1306_drawCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_Colors _color)
+void ssd1306_drawCircle( int16_t x0,
+						 int16_t y0,
+						 int16_t r,
+						 SSD1306_Colors _color )
 {
 	int16_t f = 1 - r;
 	int16_t ddF_x = 1;
