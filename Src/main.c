@@ -45,8 +45,8 @@
 #include "pictures.h"
 //#include "Fonts.h"
 
-//#include "CorperBlack.h"
-#include "CoorperNew.h"
+#include "CorperBlack.h"
+//#include "CoorperNew.h"
 
 /* USER CODE END Includes */
 
@@ -118,14 +118,18 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-//SSD1306_Puts("Hello world", &Font_7x10, SSD1306_WHITE );
-//SSD1306_Puts("Hello ", &Font_7x10, SSD1306_WHITE );
-//SSD1306_Puts("Hello world", &Font_7x10, SSD1306_WHITE );
 
- SSD1306_Puts("/dev/drugs/C++", &courierNew_8ptFontInfo, SSD1306_WHITE );
+ //SSD1306_Puts("/dev/drugs/C++", &cooperBlack_8ptFontInfo, SSD1306_WHITE );
 
- SSD1306_Puts("Hello World!", &courierNew_8ptFontInfo, SSD1306_WHITE );
-	  ssd1306_updateScreen();
+ //SSD1306_Puts("Hello World!", &cooperBlack_8ptFontInfo, SSD1306_WHITE );
+for(int i = 33; i< 100; i++)
+{
+	SSD1306_Putc( i ,&cooperBlack_8ptFontInfo , SSD1306_WHITE );
+
+	//HAL_Delay(76);
+}
+
+ssd1306_updateScreen();
 //	  ssd1306_makeContinuousScroll(continuousVertical,frames_2,2,0,7);
 
   while (1)

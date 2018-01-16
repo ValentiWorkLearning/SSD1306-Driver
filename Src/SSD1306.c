@@ -148,36 +148,36 @@ char SSD1306_Putc(char _char, const FontInfo_t* _fontInfo, SSD1306_Colors _color
 	uint16_t l_charIndex = _char-33;
 	uint16_t l_rowByte = 0;
 
-	if(_char == ' ')
-	{
-		for(int i = 0; i < _fontInfo -> m_spaceWidth; i++)
-		{
-			ssd1306_setPixel(SSD1306.CurrentX + i, SSD1306.CurrentY, !_color);
-		}
-		return 0x20;
-	}
+	if(_char == ' '){ ssd1306_setPixel(SSD1306.CurrentX + _fontInfo->m_spaceWidth, SSD1306.CurrentY, SSD1306_BLACK); return 0x20; }
 
 	for( int i = 0; i < _fontInfo->m_charHeight;  i++ )
 	{
-		l_rowByte = _fontInfo -> m_charBitmap[ _fontInfo->m_fontDescriptor[ l_charIndex ].m_charOffset + i ];
+		uint8_t l_bitsCounter = 0;
 
-		for( int j = 0; j < _fontInfo->m_fontDescriptor[ l_charIndex ].m_charWidth; j++ )
+		l_rowByte = _fontInfo -> m_charBitmap[ _fontInfo->m_fontDescriptor[ l_charIndex ].m_charOffset + i*_fontInfo->m_fontDescriptor[ l_charIndex ].m_charWidth ];
+
+		for( int j = 0; j < _fontInfo->m_fontDescriptor[ l_charIndex ].m_charWidth*8; j++ )
 		{
-
-			if( ( l_rowByte << j ) & 0x80 )
+			if(l_bitsCounter == 8)
 			{
-				ssd1306_setPixel( SSD1306.CurrentX + j, ( SSD1306.CurrentY + i ), _color );
+				l_bitsCounter = 0;
+				l_rowByte = _fontInfo -> m_charBitmap[ _fontInfo->m_fontDescriptor[ l_charIndex ].m_charOffset + i*_fontInfo->m_fontDescriptor[ l_charIndex ].m_charWidth  + 1];
 
 			}
-			else
-			{
-				ssd1306_setPixel( SSD1306.CurrentX + j, ( SSD1306.CurrentY + i ), !_color );
-			}
+			SSD1306_Colors l_color = (( l_rowByte << l_bitsCounter ) & 0x80)?_color : !_color ;
 
+			ssd1306_setPixel( SSD1306.CurrentX + j, ( SSD1306.CurrentY + i ), l_color );
+
+			l_bitsCounter ++;
 		}
 	}
 
-	SSD1306.CurrentX += _fontInfo->m_fontDescriptor[l_charIndex].m_charWidth + 2 * _fontInfo->m_spaceWidth;
+	SSD1306.CurrentX += _fontInfo->m_fontDescriptor[l_charIndex].m_charWidth*8 + _fontInfo->m_spaceWidth ;
+	if(SSD1306.CurrentX >= SSD1306_WIDTH)
+	{
+		SSD1306.CurrentY +=_fontInfo->m_charHeight + _fontInfo->m_spaceWidth;
+		SSD1306.CurrentX = 0;
+	}
 	return _char;
 }
 

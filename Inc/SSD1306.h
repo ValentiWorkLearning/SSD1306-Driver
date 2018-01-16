@@ -39,7 +39,7 @@ static uint8_t SSD1306_dispBuffer[ SSD1306_DISP_SIZE ] , * SSD1306_pDispBuffer  
 
 /**
     * Enum SSD1306_Colors.
-    * Consist a two bit states
+    * Consist a two possible colors
     */
 typedef enum
 {
@@ -153,8 +153,8 @@ typedef enum
     *_writeMode - can be CMD_MODE, DATA_MODE , MULTIBYTE_DATA_MODE
     *_data - data which will be write
     */
-void ssd1306_writeByte( uint8_t _writeMode
-					  , uint8_t _data );
+void ssd1306_writeByte( uint8_t _writeMode 	,
+						uint8_t _data 		);
 
 /**
     *Write command to SSD1306 via I2C
@@ -179,7 +179,7 @@ void ssd1306_updateScreen( void );
     *_fillColor - one color from   SSD1306_Colors enum
     *need call ssd1306_updateScreen() after call
     */
-void ssd1306_fill( SSD1306_Colors  _fillColor);
+void ssd1306_fill( SSD1306_Colors  _fillColor );
 
 /**
     *Fill the SSD1306_dispBuffer with picture
@@ -187,8 +187,8 @@ void ssd1306_fill( SSD1306_Colors  _fillColor);
     *_pictureSize = pictureWidth* pictureHeight
     *need call ssd1306_updateScreen() after call
     */
-void ssd1306_sendPicture( uint8_t * _picture
-						, int _pictureSize );
+void ssd1306_sendPicture( uint8_t * _picture,
+						 int _pictureSize );
 
 
 /**
@@ -199,20 +199,20 @@ void ssd1306_sendPicture( uint8_t * _picture
     *_startPage - start page adress in display
     *_endPage - end page adress in display
     */
-void ssd1306_makeContinuousScroll( SSD1306_rotationType _rotationType
-								 , SSD1306_rotationSpeed _rotationSpeed
-								 , uint8_t _rotationOffset
-								 , uint8_t _startPage
-								 , uint8_t _endPage );
+void ssd1306_makeContinuousScroll( SSD1306_rotationType _rotationType	,
+								   SSD1306_rotationSpeed _rotationSpeed	,
+								   uint8_t _rotationOffset				,
+								   uint8_t _startPage					,
+								   uint8_t _endPage 					);
 
-void ssd1306_makeShortScroll( SSD1306_rotationType _rotationType
-								,  SSD1306_rotationSpeed _rotationSpeed
-								,  uint8_t _startPage
-								,  uint8_t _endPage );
+void ssd1306_makeShortScroll( SSD1306_rotationType _rotationType	,
+							  SSD1306_rotationSpeed _rotationSpeed	,
+							  uint8_t _startPage					,
+							  uint8_t _endPage 						);
 
-void ssd1306_setPixel(uint8_t _xCoord
-					, uint8_t _yCoord
-					,  SSD1306_Colors _color);
+void ssd1306_setPixel(	uint8_t _xCoord			,
+						uint8_t _yCoord		  	,
+						SSD1306_Colors _color 	);
 
 void ssd1306_activateScroll( void );
 
@@ -222,7 +222,11 @@ void ssd1306_displayOn( void );
 
 void ssd1306_displayOff( void );
 
-char SSD1306_Putc(char __char, const FontInfo_t * Font, SSD1306_Colors _color);
+char SSD1306_Putc( char _char			  	,
+				   const FontInfo_t * _font	,
+				   SSD1306_Colors _color	);
 
-char SSD1306_Puts(char* str, const FontInfo_t * Font, SSD1306_Colors _color);
+char SSD1306_Puts( char* _string			,
+				   const FontInfo_t * _font	,
+				   SSD1306_Colors _color	);
 #endif /* INC_SSD1306_H_ */
