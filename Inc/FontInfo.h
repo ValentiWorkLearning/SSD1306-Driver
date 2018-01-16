@@ -19,12 +19,12 @@ typedef struct
 
 typedef struct
 {
-	uint8_t m_charHeight;
-	char  	m_startChar;
-	char  	m_endChar;
-	uint8_t m_spaceWidth;
-	FontCharInfo_t * m_fontDescriptor;
-	uint8_t * m_charBitmap;
+		uint8_t m_charHeight;
+		char  	m_startChar;
+		char  	m_endChar;
+		uint8_t m_spaceWidth;
+const 	FontCharInfo_t * m_fontDescriptor;
+const 	uint8_t * m_charBitmap;
 
 } FontInfo_t;
 

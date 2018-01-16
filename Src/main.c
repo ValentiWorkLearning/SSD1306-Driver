@@ -45,16 +45,14 @@
 #include "pictures.h"
 //#include "Fonts.h"
 
-#include "CorperBlack.h"
-//#include "CoorperNew.h"
-
+#include "CorperBlack.h" //TESTED-OK.
+#include "CoorperNew.h"	  //TESTED-OK.
+#include "Impact_12pt.h" //TESTED-OK
+#include "Impact_22pt.h" //TESTED-OK
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
-
-UART_HandleTypeDef huart1;
-DMA_HandleTypeDef hdma_usart1_tx;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
@@ -64,9 +62,7 @@ DMA_HandleTypeDef hdma_usart1_tx;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_DMA_Init(void);
 static void MX_I2C1_Init(void);
-static void MX_USART1_UART_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -104,16 +100,11 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
   MX_I2C1_Init();
-  MX_USART1_UART_Init();
 
   /* USER CODE BEGIN 2 */
  ssd1306_initDisplay();
 
-//  ssd1306_sendPicture(ValentiWorkLogo, 1024);
-
- // ssd1306_updateScreen();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -122,16 +113,33 @@ int main(void)
  //SSD1306_Puts("/dev/drugs/C++", &cooperBlack_8ptFontInfo, SSD1306_WHITE );
 
  //SSD1306_Puts("Hello World!", &cooperBlack_8ptFontInfo, SSD1306_WHITE );
-for(int i = 33; i< 100; i++)
+for(int i = 53; i< 68; i++)
 {
-	SSD1306_Putc( i ,&cooperBlack_8ptFontInfo , SSD1306_WHITE );
-
-	//HAL_Delay(76);
+	ssd1306_putChar( i ,&cooperBlack_8ptFontInfo , SSD1306_WHITE );
 }
 
-ssd1306_updateScreen();
-//	  ssd1306_makeContinuousScroll(continuousVertical,frames_2,2,0,7);
+for(int i = 53; i<68; i++)
+{
+	ssd1306_putChar( i ,&impact_12ptFontInfo , SSD1306_WHITE );
+}
+for(int i = 52; i<55; i++)
+{
+	ssd1306_putChar( i ,&impact_22ptFontInfo , SSD1306_WHITE );
+}
+ssd1306_drawRectangle(10,10,20,20,SSD1306_WHITE);
 
+ssd1306_drawRectangle(20,20,120,40,SSD1306_WHITE);
+
+ssd1306_drawCircle(20,20,10,SSD1306_WHITE);
+
+ssd1306_drawCircle(65,32,15,SSD1306_WHITE);
+
+ssd1306_drawLine(0,0,128,64,SSD1306_WHITE);
+ssd1306_drawLine(0,64,128,0,SSD1306_WHITE);
+
+ssd1306_drawLine(0,32,128,32,SSD1306_WHITE);
+
+ssd1306_updateScreen();
   while (1)
   {
   /* USER CODE END WHILE */
@@ -208,40 +216,6 @@ static void MX_I2C1_Init(void)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
-
-}
-
-/* USART1 init function */
-static void MX_USART1_UART_Init(void)
-{
-
-  huart1.Instance = USART1;
-  huart1.Init.BaudRate = 115200;
-  huart1.Init.WordLength = UART_WORDLENGTH_8B;
-  huart1.Init.StopBits = UART_STOPBITS_1;
-  huart1.Init.Parity = UART_PARITY_NONE;
-  huart1.Init.Mode = UART_MODE_TX_RX;
-  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
-  if (HAL_UART_Init(&huart1) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
-
-}
-
-/** 
-  * Enable DMA controller clock
-  */
-static void MX_DMA_Init(void) 
-{
-  /* DMA controller clock enable */
-  __HAL_RCC_DMA1_CLK_ENABLE();
-
-  /* DMA interrupt init */
-  /* DMA1_Channel4_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Channel4_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Channel4_IRQn);
 
 }
 

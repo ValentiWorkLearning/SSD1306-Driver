@@ -143,7 +143,7 @@ void ssd1306_deActivateScroll( void )
 //TO DO - Imlplement structure to return runtime errors
 //TO DO - Implement the correct processing fonts with symbol width >10( two bytes for each pixel row)
 
-char SSD1306_Putc(char _char, const FontInfo_t* _fontInfo, SSD1306_Colors _color)
+char ssd1306_putChar(char _char, const FontInfo_t* _fontInfo, SSD1306_Colors _color)
 {
 	uint16_t l_charIndex = _char-33;
 	uint16_t l_rowByte = 0;
@@ -183,15 +183,195 @@ char SSD1306_Putc(char _char, const FontInfo_t* _fontInfo, SSD1306_Colors _color
 
 
 //TO DO - Imlplement structure to return runtime errors
-char SSD1306_Puts(char* _string, const FontInfo_t* _fontInfo, SSD1306_Colors color)
+char ssd1306_putString(char* _string, const FontInfo_t* _fontInfo, SSD1306_Colors color)
 {
 	while ( * _string )
 	{
-		if (SSD1306_Putc( * _string , _fontInfo , color ) != *_string )
+		if (ssd1306_putChar( *_string , _fontInfo , color ) != *_string )
 		{
 			return * _string;
 		}
 		_string ++;
 	}
 	return * _string;
+}
+
+void ssd1306_setCursor( uint8_t _xCoord	,
+						 uint8_t _yCoord	)
+{
+	if(_xCoord>128 || _yCoord>64) return;
+	SSD1306.CurrentX = _xCoord;
+	SSD1306.CurrentY = _yCoord;
+}
+
+//Geometric primitives
+void ssd1306_drawLine( uint16_t x0				,
+		   	   	   	   uint16_t y0				,
+					   uint16_t x1				,
+					   uint16_t y1				,
+					   SSD1306_Colors _color	)
+{
+
+	int16_t dx, dy, sx, sy, err, e2, i, tmp;
+
+		/* Check for overflow */
+		if (x0 >= SSD1306_WIDTH)
+		{
+			x0 = SSD1306_WIDTH - 1;
+		}
+		if (x1 >= SSD1306_WIDTH)
+		{
+			x1 = SSD1306_WIDTH - 1;
+		}
+		if (y0 >= SSD1306_HEIGHT)
+		{
+			y0 = SSD1306_HEIGHT - 1;
+		}
+		if (y1 >= SSD1306_HEIGHT)
+		{
+			y1 = SSD1306_HEIGHT - 1;
+		}
+
+		dx = (x0 < x1) ? (x1 - x0) : (x0 - x1);
+		dy = (y0 < y1) ? (y1 - y0) : (y0 - y1);
+		sx = (x0 < x1) ? 1 : -1;
+		sy = (y0 < y1) ? 1 : -1;
+		err = ((dx > dy) ? dx : -dy) / 2;
+
+		if (dx == 0)
+		{
+			if (y1 < y0)
+			{
+				tmp = y1;
+				y1 = y0;
+				y0 = tmp;
+			}
+
+			if (x1 < x0)
+			{
+				tmp = x1;
+				x1 = x0;
+				x0 = tmp;
+			}
+
+			/* Vertical line */
+			for (i = y0; i <= y1; i++)
+			{
+				ssd1306_setPixel(x0, i, _color);
+			}
+
+			/* Return from function */
+			return;
+		}
+
+		if (dy == 0)
+		{
+			if (y1 < y0)
+			{
+				tmp = y1;
+				y1 = y0;
+				y0 = tmp;
+			}
+
+			if (x1 < x0)
+			{
+				tmp = x1;
+				x1 = x0;
+				x0 = tmp;
+			}
+
+			/* Horizontal line */
+			for (i = x0; i <= x1; i++)
+			{
+				ssd1306_setPixel(i, y0, _color);
+			}
+
+			/* Return from function */
+			return;
+		}
+
+		while (1)
+		{
+			ssd1306_setPixel(x0, y0, _color);
+			if (x0 == x1 && y0 == y1)
+			{
+				break;
+			}
+			e2 = err;
+			if (e2 > -dx)
+			{
+				err -= dy;
+				x0 += sx;
+			}
+			if (e2 < dy)
+			{
+				err += dx;
+				y0 += sy;
+			}
+		}
+
+}
+
+void ssd1306_drawRectangle(uint16_t x, uint16_t y, uint16_t w, uint16_t h, SSD1306_Colors _color) {
+	/* Check input parameters */
+	if (
+		x >= SSD1306_WIDTH ||
+		y >= SSD1306_HEIGHT
+	) {
+		/* Return error */
+		return;
+	}
+
+	/* Check width and height */
+	if ((x + w) >= SSD1306_WIDTH)
+	{
+		w = SSD1306_WIDTH - x;
+	}
+	if ((y + h) >= SSD1306_HEIGHT)
+	{
+		h = SSD1306_HEIGHT - y;
+	}
+
+	/* Draw 4 lines */
+	ssd1306_drawLine(x, y, x + w, y, _color);         /* Top line */
+	ssd1306_drawLine(x, y + h, x + w, y + h, _color); /* Bottom line */
+	ssd1306_drawLine(x, y, x, y + h, _color);         /* Left line */
+	ssd1306_drawLine(x + w, y, x + w, y + h, _color); /* Right line */
+}
+
+void ssd1306_drawCircle(int16_t x0, int16_t y0, int16_t r, SSD1306_Colors _color)
+{
+	int16_t f = 1 - r;
+	int16_t ddF_x = 1;
+	int16_t ddF_y = -2 * r;
+	int16_t x = 0;
+	int16_t y = r;
+
+	ssd1306_setPixel(x0, y0 + r, _color);
+	ssd1306_setPixel(x0, y0 - r, _color);
+	ssd1306_setPixel(x0 + r, y0, _color);
+	ssd1306_setPixel(x0 - r, y0, _color);
+
+    while (x < y)
+    {
+        if (f >= 0)
+        {
+            y--;
+            ddF_y += 2;
+            f += ddF_y;
+        }
+        x++;
+        ddF_x += 2;
+        f += ddF_x;
+
+        ssd1306_setPixel(x0 + x, y0 + y, _color);
+        ssd1306_setPixel(x0 - x, y0 + y, _color);
+        ssd1306_setPixel(x0 + x, y0 - y, _color);
+        ssd1306_setPixel(x0 - x, y0 - y, _color);
+
+        ssd1306_setPixel(x0 + y, y0 + x, _color);
+        ssd1306_setPixel(x0 - y, y0 + x, _color);
+        ssd1306_setPixel(x0 + y, y0 - x, _color);
+        ssd1306_setPixel(x0 - y, y0 - x, _color);
+    }
 }

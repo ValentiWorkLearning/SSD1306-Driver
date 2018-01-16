@@ -18,7 +18,7 @@
 #include "stm32f1xx_hal.h"
 #include "stm32f1xx_hal_i2c.h"
 #include <string.h>
-//#include "Fonts.h"
+
 #include "FontInfo.h"
 
 #define SSD1306_WIDTH	128
@@ -222,11 +222,32 @@ void ssd1306_displayOn( void );
 
 void ssd1306_displayOff( void );
 
-char SSD1306_Putc( char _char			  	,
-				   const FontInfo_t * _font	,
-				   SSD1306_Colors _color	);
+char ssd1306_putChar( char _char			  	,
+				   	  const FontInfo_t * _font	,
+					  SSD1306_Colors _color		);
 
-char SSD1306_Puts( char* _string			,
-				   const FontInfo_t * _font	,
-				   SSD1306_Colors _color	);
+char ssd1306_putString( char* _string			,
+				   	    const FontInfo_t * _font	,
+						SSD1306_Colors _color	);
+
+void ssd1306_setCursor( uint8_t _xCoord	,
+						 uint8_t _yCoord	);
+
+//Geometric primitives
+void ssd1306_drawLine( uint16_t x0				,
+					   uint16_t y0				,
+					   uint16_t x1				,
+					   uint16_t y1				,
+					   SSD1306_Colors _color	);
+
+void ssd1306_drawRectangle(uint16_t x,
+						   uint16_t y,
+						   uint16_t w,
+						   uint16_t h,
+						   SSD1306_Colors _color);
+
+void ssd1306_drawCircle ( int16_t x0,
+						  int16_t y0,
+						  int16_t r,
+						  SSD1306_Colors _color );
 #endif /* INC_SSD1306_H_ */
