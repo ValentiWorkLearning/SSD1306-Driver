@@ -154,11 +154,17 @@ ssd1306_deActivateScroll (void)
 }
 
 //TO DO - Imlplement structure to return runtime errors
-//TO DO - Implement the correct processing fonts with symbol width >10( two bytes for each pixel row)
 
 char
 ssd1306_putChar (char _char, const FontInfo_t* _fontInfo, SSD1306_Colors _color)
 {
+    /**
+    *HOW IT'S WORK
+    *1.Calculate the character index in fontArray. This is the ASCII code minus 33
+    *2.If incoming character is space - set space in current x and y display buffer positions.
+    *3.Draw the character row by row
+    */
+
     uint16_t l_charIndex = _char - 33;
     uint16_t l_rowByte = 0;
     uint16_t l_charOffset = _fontInfo->m_fontDescriptor[l_charIndex].m_charOffset;
@@ -204,8 +210,6 @@ ssd1306_putChar (char _char, const FontInfo_t* _fontInfo, SSD1306_Colors _color)
     return _char;
 }
 
-
-//TO DO - Imlplement structure to return runtime errors
 char
 ssd1306_putString (char* _string,
                    const FontInfo_t* _fontInfo,
@@ -232,7 +236,9 @@ ssd1306_setCursor (uint8_t _xCoord,
     SSD1306.CurrentY = _yCoord;
 }
 
-//Geometric primitives
+/**
+ * Geometric primitives
+ */
 void
 ssd1306_drawLine (uint16_t x0,
                   uint16_t y0,

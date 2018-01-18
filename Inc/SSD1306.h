@@ -26,8 +26,8 @@
 
 /**
  * System definitions and variables
- * SSD1306_DISP_SIZE - define the SSD1306 displzy size in pixels
- * extern I2C_HandleTypeDef hi2c1 define the used I2C wire
+ * SSD1306_DISP_SIZE - define the SSD1306 display size in pixels
+ * extern I2C_HandleTypeDef hi2c1 define the used I2C bus
  * dispBuffer- buffer for sending via I2C in ssd1306_updateScreen() function
  */
 #define SSD1306_DISP_SIZE SSD1306_WIDTH * SSD1306_HEIGHT / 8 + 1
@@ -76,14 +76,14 @@ typedef enum
 /**
  *Display driver commands definitions
  */
-#define SSD1306_I2C_ADDR							0x78
+#define SSD1306_I2C_ADDR                            0x78
 
-#define SSD1306_I2C_CMD_MODE						0x80
-#define SSD1306_I2C_DATA_MODE 						0xC0
-#define SSD1306_I2C_MULTIBYTE_DATA_MODE				0x40
+#define SSD1306_I2C_CMD_MODE                        0x80
+#define SSD1306_I2C_DATA_MODE                       0xC0
+#define SSD1306_I2C_MULTIBYTE_DATA_MODE             0x40
 
-#define SSD1306_SET_LOWER_COLUMN_START_ADRESS 		0x00
-#define SSD1306_SET_HIGHER_COLUMN_START_ADRESS		0x10
+#define SSD1306_SET_LOWER_COLUMN_START_ADRESS       0x00
+#define SSD1306_SET_HIGHER_COLUMN_START_ADRESS      0x10
 
 /**
  * Can be various:
@@ -92,57 +92,57 @@ typedef enum
  * 10,Page Addressing Mode (RESET);
  * 11,Invalid
  */
-#define SSD1306_SET_MEMORY_ADRESSING_MODE 			0x20
+#define SSD1306_SET_MEMORY_ADRESSING_MODE           0x20
 
-#define SSD1306_SET_COLUMN_ADRESS					0x21
-#define SSD1306_SET_PAGE_ADRESS						0x22
+#define SSD1306_SET_COLUMN_ADRESS                   0x21
+#define SSD1306_SET_PAGE_ADRESS                     0x22
 
 /**
- *Pure configuration commands
+ *System configuration commands
  */
-#define SDD1306_SET_DISPLAY_OFF						0xAE
-#define SSD1306_SET_DISPLAY_CLOCK_DIVIDE_RATIO 		0xD5
-#define SSD1306_SET_DISPLAY_OSCILLATOR_FREQ 		0x80
+#define SDD1306_SET_DISPLAY_OFF                     0xAE
+#define SSD1306_SET_DISPLAY_CLOCK_DIVIDE_RATIO      0xD5
+#define SSD1306_SET_DISPLAY_OSCILLATOR_FREQ         0x80
 
-#define SSD1306_SET_MULTIPLEX_RATIO 				0xA8
-#define SSD1306_SET_AFTER_MULTIPLEX_RATIO 			0x3F
+#define SSD1306_SET_MULTIPLEX_RATIO                 0xA8
+#define SSD1306_SET_AFTER_MULTIPLEX_RATIO           0x3F
 
-#define SSD1306_SET_DISP_OFFSET 					0xD3
-#define SSD1306_SET_AFTER_DISPLAY_OFFSET 			0x00
+#define SSD1306_SET_DISP_OFFSET                     0xD3
+#define SSD1306_SET_AFTER_DISPLAY_OFFSET            0x00
 
-#define SSD1306_SET_START_LINE 						0x40
+#define SSD1306_SET_START_LINE                      0x40
 
-#define SSD1306_SET_CHARGE_PUMP 					0x8D
-#define SSD1306_SET_VCC_EXTERNALLY 					0x10
-#define SSD1306_SET_VCC_INTERNAL_DC 				0x14
+#define SSD1306_SET_CHARGE_PUMP                     0x8D
+#define SSD1306_SET_VCC_EXTERNALLY                  0x10
+#define SSD1306_SET_VCC_INTERNAL_DC                 0x14
 
-#define SSD1306_SET_SEGMENT_REMAP 					0xA1
+#define SSD1306_SET_SEGMENT_REMAP                   0xA1
 
-#define SSD1306_SET_COM_DIRECION 					0xC8
+#define SSD1306_SET_COM_DIRECION                    0xC8
 
-#define SSD1306_SET_COM_HARDWARE_CONF_1 			0xDA
-#define SSD1306_SET_COM_HARDWARE_CONF_2 			0x12
+#define SSD1306_SET_COM_HARDWARE_CONF_1             0xDA
+#define SSD1306_SET_COM_HARDWARE_CONF_2             0x12
 
-#define SSD1306_SET_CONTRAST_CTRL 					0x81
-#define SSD1306_SET_CONTRAST_CTRL_VCC_EXTERNAL 		0x9F
-#define SSD1306_SET_CONTRAST_CTRL_VCC_INTERNAL 		0xCF
+#define SSD1306_SET_CONTRAST_CTRL                   0x81
+#define SSD1306_SET_CONTRAST_CTRL_VCC_EXTERNAL      0x9F
+#define SSD1306_SET_CONTRAST_CTRL_VCC_INTERNAL      0xCF
 
-#define SSD1306_SET_PRECHARGE_PERIOD 				0xD9
-#define SSD1306_SET_PRECHARGE_PREIOD_VCC_EXTERNAL	0x22
-#define SSD1306_SET_PRECHARGE_PREIOD_VCC_INTERNAL	0xF1
+#define SSD1306_SET_PRECHARGE_PERIOD                0xD9
+#define SSD1306_SET_PRECHARGE_PREIOD_VCC_EXTERNAL   0x22
+#define SSD1306_SET_PRECHARGE_PREIOD_VCC_INTERNAL   0xF1
 
-#define SSD1306_SET_VCOMH_DESELECT_LEVEL_1 			0xDB
-#define SSD1306_SET_VCOMH_DESELECT_LEVEL_2 			0x40
+#define SSD1306_SET_VCOMH_DESELECT_LEVEL_1          0xDB
+#define SSD1306_SET_VCOMH_DESELECT_LEVEL_2          0x40
 
-#define SSD1306_SET_ENTIRE_DISPLAY_ON_OFF 			0xA4
+#define SSD1306_SET_ENTIRE_DISPLAY_ON_OFF           0xA4
 
-#define SSD1306_SET_NORMAL_DISPLAY					0xA6
-#define SSD1306_SET_IVERSE_DISPLAY					0xA7
-#define SSD1306_SET_DISPLAY_ON 						0xAF
+#define SSD1306_SET_NORMAL_DISPLAY                  0xA6
+#define SSD1306_SET_IVERSE_DISPLAY                  0xA7
+#define SSD1306_SET_DISPLAY_ON                      0xAF
 
-#define SSD1306_SET_PAGE_START_ADRESS				0xB0
-#define SSD1306_DEACTIVATE_SCROLL					0x2E
-#define SSD1306_ACTIVATE_SCROLL						0x2F
+#define SSD1306_SET_PAGE_START_ADRESS               0xB0
+#define SSD1306_DEACTIVATE_SCROLL                   0x2E
+#define SSD1306_ACTIVATE_SCROLL                     0x2F
 
 /**
  *Write one byte to SSD1306 via I2C
@@ -210,35 +210,66 @@ ssd1306_makeShortScroll (
                          SSD1306_rotationSpeed _rotationSpeed,
                          uint8_t _startPage,
                          uint8_t _endPage);
-
+/**
+ *Set the pixel in displayBuffer.
+ *_xCoord - x coordinate
+ *_yCoord - y coordinate
+ *_color - color from SSD1306_Colors
+ */
 void
 ssd1306_setPixel (uint8_t _xCoord, uint8_t _yCoord, SSD1306_Colors _color);
 
+/**
+ * Activate display scrolling
+ */
 void
 ssd1306_activateScroll (void);
 
+/**
+ * Deactivate display scrolling
+ */
 void
 ssd1306_deActivateScroll (void);
 
+/**
+ * Set display ON
+ */
 void
 ssd1306_displayOn (void);
 
+/**
+ * Set display OFF
+ */
 void
 ssd1306_displayOff (void);
 
+/**
+ * Put character to display in current position x and y
+ * FontInfo_t - information about selected font. Watch  the FontInfo.h
+ * _color - color from SSD1306_Colors
+ */
 char
 ssd1306_putChar (char _char, const FontInfo_t * _font, SSD1306_Colors _color);
 
+/**
+ * Put string to display in current position x and y
+ * FontInfo_t - information about selected font. Watch  the FontInfo.h
+ * _color - color from SSD1306_Colors
+ */
 char
 ssd1306_putString (
                    char* _string,
                    const FontInfo_t * _font,
                    SSD1306_Colors _color);
-
+/**
+ * Set cursor in selected position
+ */
 void
 ssd1306_setCursor (uint8_t _xCoord, uint8_t _yCoord);
 
-//Geometric primitives
+/**
+ * Geometric primitives functions
+ */
 void
 ssd1306_drawLine (
                   uint16_t x0,
