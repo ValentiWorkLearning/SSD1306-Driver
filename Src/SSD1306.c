@@ -37,8 +37,7 @@ ssd1306_updateScreen (void)
 {
     SSD1306_pDispBuffer[0] = SSD1306_I2C_MULTIBYTE_DATA_MODE;
     HAL_I2C_Master_Transmit (&hi2c1, SSD1306_I2C_ADDR, SSD1306_pDispBuffer,
-    SSD1306_DISP_SIZE,
-                             1000);
+    SSD1306_DISP_SIZE,1000);
 
 }
 
@@ -48,6 +47,7 @@ ssd1306_fill (SSD1306_Colors _fillColor)
     /* Set memory */
     memset (SSD1306_pDispBuffer, (_fillColor == SSD1306_BLACK) ? 0x00 : 0xFF,
     SSD1306_DISP_SIZE);
+    ssd1306_setCursor(1,1);
 }
 
 void
@@ -120,6 +120,8 @@ ssd1306_makeShortScroll (
     ssd1306_writeCommand (_startPage);
     ssd1306_writeCommand (_rotationSpeed);
     ssd1306_writeCommand (_endPage);
+    ssd1306_writeCommand (0x00);
+    ssd1306_writeCommand (0xFF);
     ssd1306_activateScroll ();
 
 }
@@ -153,6 +155,22 @@ ssd1306_deActivateScroll (void)
     ssd1306_writeCommand ( SSD1306_DEACTIVATE_SCROLL);
 }
 
+void
+ssd1306_displayOn (void)
+{
+    ssd1306_writeCommand (0x8D);
+    ssd1306_writeCommand (0x14);
+    ssd1306_writeCommand (0xAF);
+}
+
+void
+ssd1306_displayOff (void)
+{
+    ssd1306_writeCommand (0x8D);
+    ssd1306_writeCommand (0x10);
+    ssd1306_writeCommand (0xAE);
+}
+
 //TO DO - Imlplement structure to return runtime errors
 
 char
@@ -164,19 +182,19 @@ ssd1306_putChar (char _char, const FontInfo_t* _fontInfo, SSD1306_Colors _color)
     *2.If incoming character is space - set space in current x and y display buffer positions.
     *3.Draw the character row by row
     */
+    if (_char == ' ')
+        {
+            //ssd1306_setPixel (SSD1306.CurrentX + _fontInfo->m_spaceWidth,
+            //                  SSD1306.CurrentY, SSD1306_BLACK);
+            ssd1306_setCursor(SSD1306.CurrentX + _fontInfo->m_spaceWidth ,SSD1306.CurrentY );
+            return 0x20;
+        }
 
     uint16_t l_charIndex = _char - 33;
     uint16_t l_rowByte = 0;
     uint16_t l_charOffset = _fontInfo->m_fontDescriptor[l_charIndex].m_charOffset;
     uint16_t l_charWidth = _fontInfo->m_fontDescriptor[l_charIndex].m_charWidth;
     uint8_t l_pixelCharWidth = _fontInfo->m_fontDescriptor[l_charIndex].m_charWidth * 8;
-
-    if (_char == ' ')
-    {
-        ssd1306_setPixel (SSD1306.CurrentX + _fontInfo->m_spaceWidth,
-                          SSD1306.CurrentY, SSD1306_BLACK);
-        return 0x20;
-    }
 
     for (int i = 0; i < _fontInfo->m_charHeight; i++)
     {
@@ -201,7 +219,7 @@ ssd1306_putChar (char _char, const FontInfo_t* _fontInfo, SSD1306_Colors _color)
         }
     }
 
-    SSD1306.CurrentX += _fontInfo->m_fontDescriptor[l_charIndex].m_charWidth * 8 + _fontInfo->m_spaceWidth;
+    SSD1306.CurrentX += _fontInfo->m_fontDescriptor[l_charIndex].m_charWidth * 8;//+ _fontInfo->m_spaceWidth;
     if (SSD1306.CurrentX >= SSD1306_WIDTH)
     {
         SSD1306.CurrentY += _fontInfo->m_charHeight + _fontInfo->m_spaceWidth;
